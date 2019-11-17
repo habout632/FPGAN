@@ -57,11 +57,14 @@ class Pix2PixClassifierModel(BaseModel):
             self.fake_AB_pool = ImagePool(opt.pool_size)
             self.old_lr = opt.lr
             self.old_c_lr = opt.lr * 0.01
+
             # define loss functions
             self.criterionGAN = networks.GANLoss(use_lsgan=not opt.no_lsgan, tensor=self.Tensor)
             self.criterionL1 = torch.nn.L1Loss()
+
             # add the perceptual loss 
             self.criterionP = torch.nn.L1Loss()
+
             # add the classicier loss
             self.criterionC = torch.nn.BCELoss()
 
@@ -109,6 +112,8 @@ class Pix2PixClassifierModel(BaseModel):
     # self.perceptual_real_B = Variable(util.preprocess(self.real_B).data, requires_grad = False)
 
     def forward_C(self):
+
+        #
         self.real_B = Variable(self.input_B).cuda()
         self.preprocess_real_B = Variable(util.preprocess(self.real_B)).cuda()
         # self.perceptual_real_B_out = self.vgg_model.forward(self.preprocess_real_B)[3]
@@ -147,9 +152,9 @@ class Pix2PixClassifierModel(BaseModel):
 
     def backward_C(self):
 
+        # gender label: 0 or 1
         self.attr = self.Tensor(1, 1)
         self.attr = torch.from_numpy(self.gender).float().cuda()
-
         self.label = Variable(self.attr)
 
         self.classifier_real = self.netC.forward(self.gender_real_B_out)

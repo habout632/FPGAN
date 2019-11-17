@@ -17,6 +17,10 @@ visualizer = Visualizer(opt)
 
 total_steps = 0
 
+
+"""
+train gender preserving classifer
+"""
 for epoch in range(1, opt.citer + 1):
     epoch_start_time = time.time()
     for i, data in enumerate(dataset):
@@ -45,6 +49,9 @@ for epoch in range(1, opt.citer + 1):
     if epoch <= opt.citer:
         model.update_C_rate()
 
+
+""""
+"""
 model.old_lr = opt.lr
 for epoch in range(1, opt.niter + opt.niter_decay + 1):
     epoch_start_time = time.time()
@@ -65,6 +72,7 @@ for epoch in range(1, opt.niter + opt.niter_decay + 1):
             t = (time.time() - iter_start_time) / opt.batchSize
             visualizer.print_current_errors(epoch, epoch_iter, errors, t)
             if opt.display_id > 0:
+                # pass
                 visualizer.plot_current_errors(epoch, float(epoch_iter) / dataset_size, opt, errors)
 
         if total_steps % opt.save_latest_freq == 0:

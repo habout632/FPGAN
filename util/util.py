@@ -36,6 +36,11 @@ def tensor2im(image_tensor, imtype=np.uint8):
 
 
 def preprocess(image_tensor):
+    """
+    torchvison transforms
+    :param image_tensor:
+    :return:
+    """
     tensortype = type(image_tensor.data)
     image_tensor_out = tensortype(1, 3, 224, 224)
 
